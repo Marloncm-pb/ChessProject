@@ -8,6 +8,7 @@ import chess.Color;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class UI {
     // https://stackoverflow.com/questions/5762491/how-to-print-color-in-console-using-system-out-println
@@ -95,15 +96,24 @@ public class UI {
         printCapturedPieces(captured);
         System.out.println();
         System.out.println("Turn: " + chessMatch.getTurn());
-        System.out.println("Waiting player: " + chessMatch.getCurrentPlayer());
+        if (!chessMatch.getCheckMate()){
+            System.out.println("Waiting player: " + chessMatch.getCurrentPlayer());
+            if(chessMatch.getCheck()){
+                System.out.println("CHECK!");
+            }
+        }else{
+            System.out.println("CHECKMATE!");
+            System.out.println("Winner: " + chessMatch.getCurrentPlayer());
+        }
+
         if(chessMatch.getCheck()){
             System.out.println("CHECK!");
         }
     }
 
     private static void printCapturedPieces(List<ChessPiece> captured){
-        List<ChessPiece> white = captured.stream().filter(x -> x.getColor() == Color.WHITE).collect(java.util.stream.Collectors.toList());
-        List<ChessPiece> black = captured.stream().filter(x -> x.getColor() == Color.BLACK).collect(java.util.stream.Collectors.toList());
+        List<ChessPiece> white = captured.stream().filter(x -> x.getColor() == Color.WHITE).toList();
+        List<ChessPiece> black = captured.stream().filter(x -> x.getColor() == Color.BLACK).toList();
         System.out.println("Captured pieces:");
         System.out.print("White: ");
         System.out.print(ANSI_WHITE);
